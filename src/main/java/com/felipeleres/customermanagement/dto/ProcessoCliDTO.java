@@ -4,15 +4,20 @@ import com.felipeleres.customermanagement.entities.Cliente;
 import com.felipeleres.customermanagement.entities.Processo;
 import com.felipeleres.customermanagement.enums.FormaPagamento;
 import com.felipeleres.customermanagement.enums.Situacao;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
 
 public class ProcessoCliDTO {
 
     private Long id;
+    @NotNull(message = "Campo requirido, informe um número de processo!")
     private String numero;
     private String descricao;
     private LocalDate data;
+    @NotNull(message = "Campo requirido, informe um número de processo!")
+    @Positive(message = "O valor deve ser positivo!")
     private Double valor;
     private Situacao situacao;
     private ClienteDTO cliente;

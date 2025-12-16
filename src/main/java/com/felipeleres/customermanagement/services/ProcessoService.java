@@ -6,6 +6,8 @@ import com.felipeleres.customermanagement.entities.Cliente;
 import com.felipeleres.customermanagement.entities.Processo;
 import com.felipeleres.customermanagement.repositories.ClienteRepository;
 import com.felipeleres.customermanagement.repositories.ProcessoRepository;
+import com.felipeleres.customermanagement.services.exception.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +35,7 @@ public class ProcessoService {
     @Transactional(readOnly = true)
     public ProcessoCliDTO processo (Long id){
         Optional<Processo> resultado = processoRepository.findById(id);
-        Processo processo = resultado.get();
+        Processo processo = resultado.orElseThrow(() -> new ResourceNotFoundException("Processo não encontrado!"));
         return new ProcessoCliDTO(processo);
     }
 
@@ -57,17 +59,20 @@ public class ProcessoService {
     @Transactional
     public ProcessoDTO atualizar( Long id, ProcessoDTO processoDTO){
 
-        Processo processo =  processoRepository.getReferenceById(id);
+        try {
+            Processo processo = processoRepository.getReferenceById(id);
+            processo.setNumero(processoDTO.getNumero());
+            processo.setDescricao(processoDTO.getDescricao());
+            processo.setData(processoDTO.getData());
+            processo.setValor(processoDTO.getValor());
+            processo.setSituacao(processoDTO.getSituacao());
+            processo.setFormaPagamento(processoDTO.getFormaPagamento());
 
-        processo.setNumero(processoDTO.getNumero());
-        processo.setDescricao(processoDTO.getDescricao());
-        processo.setData(processoDTO.getData());
-        processo.setValor(processoDTO.getValor());
-        processo.setSituacao(processoDTO.getSituacao());
-        processo.setFormaPagamento(processoDTO.getFormaPagamento());
-
-        processo =  processoRepository.save(processo);
-        return new ProcessoDTO(processo);
+            processo = processoRepository.save(processo);
+            return new ProcessoDTO(processo);
+        } catch(EntityNotFoundException e){
+            throw new ResourceNotFoundException("Processo não encontrado!");
+        }
     }
 
 }

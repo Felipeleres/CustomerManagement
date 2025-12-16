@@ -2,13 +2,21 @@ package com.felipeleres.customermanagement.dto;
 
 
 import com.felipeleres.customermanagement.entities.Cliente;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 
 public class ClienteDTO {
 
 
     private Long id;
+
+    @NotBlank
+    @Size(min = 10,message = "Campo requerido, deve informar o nome do cliente!")
     private String name;
+
+    @NotNull(message = "Campo requirido, deve informar o cpf do cliente!")
     private String cpf;
 
 

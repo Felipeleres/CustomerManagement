@@ -3,6 +3,7 @@ package com.felipeleres.customermanagement.controllers;
 import com.felipeleres.customermanagement.dto.ClienteDTO;
 import com.felipeleres.customermanagement.entities.Cliente;
 import com.felipeleres.customermanagement.services.ClienteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +34,7 @@ public class ClienteController {
 
 
     @PostMapping
-    public ResponseEntity<ClienteDTO> inserir(@RequestBody ClienteDTO clienteDTO){
+    public ResponseEntity<ClienteDTO> inserir(@Valid @RequestBody ClienteDTO clienteDTO){
         ClienteDTO dto = clienteService.inserir(clienteDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);

@@ -3,6 +3,8 @@ package com.felipeleres.customermanagement.services;
 import com.felipeleres.customermanagement.dto.ClienteDTO;
 import com.felipeleres.customermanagement.entities.Cliente;
 import com.felipeleres.customermanagement.repositories.ClienteRepository;
+import com.felipeleres.customermanagement.services.exception.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,9 +27,11 @@ public class ClienteService {
 
     @Transactional(readOnly = true)
     public ClienteDTO buscarCliente(Long id){
-        Optional<Cliente> resultado = clienteRepository.findById(id);
-        Cliente cliente =  resultado.get();
-        return new ClienteDTO(cliente);
+
+            Optional<Cliente> resultado = clienteRepository.findById(id);
+            Cliente cliente = resultado.orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado!"));
+            return new ClienteDTO(cliente);
+
     }
 
 
@@ -45,12 +49,18 @@ public class ClienteService {
 
     @Transactional
     public ClienteDTO atualizar(Long id, ClienteDTO clienteDTO){
-        Cliente cliente =  clienteRepository.getReferenceById(id);
 
-        cliente.setName(clienteDTO.getName());
-        cliente.setCpf(clienteDTO.getCpf());
-        cliente = clienteRepository.save(cliente);
-        return new ClienteDTO(cliente);
+        try {
+
+            Cliente cliente = clienteRepository.getReferenceById(id);
+
+            cliente.setName(clienteDTO.getName());
+            cliente.setCpf(clienteDTO.getCpf());
+            cliente = clienteRepository.save(cliente);
+            return new ClienteDTO(cliente);
+        } catch(EntityNotFoundException e){
+            throw new ResourceNotFoundException("Cliente não encontrado!");
+        }
     }
 
 
