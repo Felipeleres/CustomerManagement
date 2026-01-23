@@ -6,9 +6,11 @@ import com.felipeleres.customermanagement.dto.ProcessoDTO;
 import com.felipeleres.customermanagement.entities.Pagamento;
 import com.felipeleres.customermanagement.entities.Parcela;
 import com.felipeleres.customermanagement.entities.Processo;
+import com.felipeleres.customermanagement.enums.StatusPagamento;
 import com.felipeleres.customermanagement.repositories.PagamentoRepository;
 import com.felipeleres.customermanagement.repositories.ParcelaRepository;
 import com.felipeleres.customermanagement.repositories.ProcessoRepository;
+import com.felipeleres.customermanagement.services.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +47,35 @@ public class PagamentoService {
             dto.addParcela(new ParcelaDTO(parce));
         }
         return dto;
+    }
+
+    @Transactional
+    public PagamentoDTO atualizarPagamento(Long id, PagamentoDTO pagamentoDTO){
+
+         Pagamento pagamento = pagamentoRepository.getReferenceById(id);
+
+         if(pagamento == null){
+
+             throw new ResourceNotFoundException("Pagamento não encontrado!");
+         }
+         else{
+
+             for(Parcela par : pagamento.getParcelas()){
+                 if (par.getStatusPagamento().equals(StatusPagamento.AGUARDANDO_PAGAMENTO)||par.getStatusPagamento().equals(StatusPagamento.EM_ATRASO)){
+                     throw new RuntimeException("Existem pendências no pagamento");
+                 }
+             }
+             pagamento.setStatusPagamento(pagamentoDTO.getStatusPagamento());
+             pagamento = pagamentoRepository.save(pagamento);
+
+             PagamentoDTO dto = new PagamentoDTO(pagamento);
+
+             for(Parcela parce : pagamento.getParcelas()){
+                 dto.addParcela(new ParcelaDTO(parce));
+             }
+             return dto;
+         }
+
     }
 
     public Parcela dtoToEntity(ParcelaDTO parcelaDTO){
