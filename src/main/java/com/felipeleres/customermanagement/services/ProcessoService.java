@@ -2,6 +2,7 @@ package com.felipeleres.customermanagement.services;
 
 import com.felipeleres.customermanagement.dto.ProcessoCliDTO;
 import com.felipeleres.customermanagement.dto.ProcessoDTO;
+import com.felipeleres.customermanagement.dto.ProcessoReturnDTO;
 import com.felipeleres.customermanagement.entities.Cliente;
 import com.felipeleres.customermanagement.entities.Processo;
 import com.felipeleres.customermanagement.repositories.ClienteRepository;
@@ -33,16 +34,16 @@ public class ProcessoService {
     }
 
     @Transactional(readOnly = true)
-    public ProcessoCliDTO processo (Long id){
+    public ProcessoReturnDTO processo (Long id){
         Optional<Processo> resultado = processoRepository.findById(id);
         Processo processo = resultado.orElseThrow(() -> new ResourceNotFoundException("Processo não encontrado!"));
-        return new ProcessoCliDTO(processo);
+        return new ProcessoReturnDTO(processo);
     }
 
 
     @Transactional
-    public ProcessoCliDTO inserirProcesso(ProcessoCliDTO processoCliDTO){
-        Cliente cliente = clienteRepository.getReferenceById(processoCliDTO.getCliente().getId());
+    public ProcessoReturnDTO inserirProcesso(ProcessoCliDTO processoCliDTO){
+        Cliente cliente = clienteRepository.getReferenceById(processoCliDTO.getClienteId());
         Processo processo = new Processo();
         processo.setNumero(processoCliDTO.getNumero());
         processo.setDescricao(processoCliDTO.getDescricao());
@@ -53,7 +54,7 @@ public class ProcessoService {
         processo.setFormaPagamento(processoCliDTO.getFormaPagamento());
         processo = processoRepository.save(processo);
 
-        return new ProcessoCliDTO(processo);
+        return new ProcessoReturnDTO(processo);
     }
 
     @Transactional

@@ -1,40 +1,43 @@
-package com.felipeleres.customermanagement.entities;
+package com.felipeleres.customermanagement.dto;
 
+import com.felipeleres.customermanagement.entities.Pagamento;
+import com.felipeleres.customermanagement.entities.Parcela;
+import com.felipeleres.customermanagement.entities.Processo;
 import com.felipeleres.customermanagement.enums.StatusPagamento;
-import com.felipeleres.customermanagement.enums.FormaPagamento;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "tb_pagamento")
-public class Pagamento {
+public class PagamentoDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     private StatusPagamento statusPagamento;
-    @OneToOne
-    @JoinColumn(name = "processo_id")
-    private Processo processo;
+    private Long processoID;
     private Integer quantidadeParcelas;
     private Double valorParcela;
+    private List<ParcelaDTO> parcelas = new ArrayList<>();
 
-    @OneToMany(mappedBy = "pagamento",cascade = CascadeType.ALL)
-    private List<Parcela> parcelas = new ArrayList<>();
-
-    public Pagamento(){
+    public PagamentoDTO(){
 
     }
 
-    public Pagamento(Long id, StatusPagamento statusPagamento, Processo processo, Integer quantidadeParcelas, Double valorParcela) {
+    public PagamentoDTO(Long id, StatusPagamento statusPagamento, Long processo, Integer quantidadeParcelas, Double valorParcela) {
         this.id = id;
         this.statusPagamento = statusPagamento;
-        this.processo = processo;
+        this.processoID = processo;
         this.quantidadeParcelas = quantidadeParcelas;
         this.valorParcela = valorParcela;
+    }
+
+
+    public PagamentoDTO(Pagamento pagamento) {
+        id = pagamento.getId();
+        statusPagamento = pagamento.getStatusPagamento();
+        processoID = pagamento.getProcesso().getId();
+        quantidadeParcelas = pagamento.getQuantidadeParcelas();
+        valorParcela = pagamento.getValorParcela();
     }
 
     public Long getId() {
@@ -53,12 +56,12 @@ public class Pagamento {
         this.statusPagamento = statusPagamento;
     }
 
-    public Processo getProcesso() {
-        return processo;
+    public Long getProcessoID() {
+        return processoID;
     }
 
-    public void setProcesso(Processo processo) {
-        this.processo = processo;
+    public void setProcessoID(Long processoID) {
+        this.processoID = processoID;
     }
 
     public Integer getQuantidadeParcelas() {
@@ -77,21 +80,16 @@ public class Pagamento {
         this.valorParcela = valorParcela;
     }
 
-    public List<Parcela> getParcelas(){
+    public void addParcela(ParcelaDTO parcela){
+        parcelas.add(parcela);
+    }
+
+    public List<ParcelaDTO> getParcelas(){
         return parcelas;
     }
 
-    public void addParcela(Parcela parcela){
-        parcelas.add(parcela);
-        parcela.setPagamento(this);
-    }
-
-    public void removerParcela(Parcela parcela){
+    public void removerParcela(ParcelaDTO parcela){
         parcelas.remove(parcela);
-        parcela.setPagamento(null);
-
     }
-
-
 
 }

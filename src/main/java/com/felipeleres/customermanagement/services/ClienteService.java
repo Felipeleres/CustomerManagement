@@ -1,6 +1,7 @@
 package com.felipeleres.customermanagement.services;
 
 import com.felipeleres.customermanagement.dto.ClienteDTO;
+import com.felipeleres.customermanagement.dto.ClienteProDTO;
 import com.felipeleres.customermanagement.entities.Cliente;
 import com.felipeleres.customermanagement.repositories.ClienteRepository;
 import com.felipeleres.customermanagement.services.exception.ResourceNotFoundException;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,9 +33,12 @@ public class ClienteService {
             Optional<Cliente> resultado = clienteRepository.findById(id);
             Cliente cliente = resultado.orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado!"));
             return new ClienteDTO(cliente);
-
     }
-
+    @Transactional(readOnly = true)
+    public List<ClienteProDTO> buscarClientePorNome(String nome){
+        List<Cliente> clientes = clienteRepository.findByNameContainingIgnoreCase(nome);
+        return clientes.stream().map(x -> new ClienteProDTO(x)).toList();
+    }
 
     @Transactional
     public ClienteDTO inserir (ClienteDTO clienteDTO){

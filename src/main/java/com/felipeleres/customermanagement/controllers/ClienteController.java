@@ -1,6 +1,7 @@
 package com.felipeleres.customermanagement.controllers;
 
 import com.felipeleres.customermanagement.dto.ClienteDTO;
+import com.felipeleres.customermanagement.dto.ClienteProDTO;
 import com.felipeleres.customermanagement.entities.Cliente;
 import com.felipeleres.customermanagement.services.ClienteService;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/cliente")
@@ -30,6 +32,12 @@ public class ClienteController {
     public ResponseEntity<ClienteDTO> cliente (@PathVariable Long id){
         ClienteDTO  clienteDTO =  clienteService.buscarCliente(id);
         return ResponseEntity.ok(clienteDTO);
+    }
+
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<ClienteProDTO>> buscarClientePorNome (@RequestParam String nome){
+        List<ClienteProDTO> dto = clienteService.buscarClientePorNome(nome);
+        return ResponseEntity.ok(dto);
     }
 
 
