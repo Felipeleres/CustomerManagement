@@ -3,6 +3,7 @@ package com.felipeleres.customermanagement.handlers;
 import com.felipeleres.customermanagement.dto.CustomError;
 import com.felipeleres.customermanagement.dto.FieldMessage;
 import com.felipeleres.customermanagement.dto.ValidationError;
+import com.felipeleres.customermanagement.services.exception.PagamentoException;
 import com.felipeleres.customermanagement.services.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -33,5 +34,15 @@ public class ControllerExceptionHandler {
         }
         return ResponseEntity.status(status).body(error);
     }
+
+
+    @ExceptionHandler({PagamentoException.class})
+    public ResponseEntity<CustomError> PagamentoException (PagamentoException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        CustomError error =  new CustomError(Instant.now(),status.value(),"Existe pendências no pagamento",request.getRequestURI());
+        return ResponseEntity.status(status).body(error);
+    }
+
+
 
 }

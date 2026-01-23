@@ -10,6 +10,7 @@ import com.felipeleres.customermanagement.enums.StatusPagamento;
 import com.felipeleres.customermanagement.repositories.PagamentoRepository;
 import com.felipeleres.customermanagement.repositories.ParcelaRepository;
 import com.felipeleres.customermanagement.repositories.ProcessoRepository;
+import com.felipeleres.customermanagement.services.exception.PagamentoException;
 import com.felipeleres.customermanagement.services.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,7 +63,7 @@ public class PagamentoService {
 
              for(Parcela par : pagamento.getParcelas()){
                  if (par.getStatusPagamento().equals(StatusPagamento.AGUARDANDO_PAGAMENTO)||par.getStatusPagamento().equals(StatusPagamento.EM_ATRASO)){
-                     throw new RuntimeException("Existem pendências no pagamento");
+                     throw new PagamentoException("Existem pendências no pagamento");
                  }
              }
              pagamento.setStatusPagamento(pagamentoDTO.getStatusPagamento());
