@@ -7,6 +7,7 @@ import com.felipeleres.customermanagement.enums.Situacao;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class ProcessoCliDTO {
@@ -18,7 +19,7 @@ public class ProcessoCliDTO {
     private LocalDate data;
     @NotNull(message = "Campo requirido, informe um número de processo!")
     @Positive(message = "O valor deve ser positivo!")
-    private Double valor;
+    private BigDecimal valor;
     private Situacao situacao;
     private Long clienteId;
     private FormaPagamento formaPagamento;
@@ -27,7 +28,7 @@ public class ProcessoCliDTO {
 
     }
 
-    public ProcessoCliDTO(Long id, String descricao, String numero, LocalDate data, Double valor, Situacao situacao, Long clienteId,FormaPagamento formaPagamento) {
+    public ProcessoCliDTO(Long id, String descricao, String numero, LocalDate data, BigDecimal valor, Situacao situacao, Long clienteId,FormaPagamento formaPagamento) {
         this.id = id;
         this.descricao = descricao;
         this.numero = numero;
@@ -70,11 +71,11 @@ public class ProcessoCliDTO {
         this.descricao = descricao;
     }
 
-    public Double getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(Double valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 

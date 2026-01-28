@@ -1,5 +1,6 @@
 package com.felipeleres.customermanagement.services;
 
+import com.felipeleres.customermanagement.dto.FinanceiroDTO;
 import com.felipeleres.customermanagement.dto.PagamentoDTO;
 import com.felipeleres.customermanagement.dto.ParcelaDTO;
 import com.felipeleres.customermanagement.dto.ProcessoDTO;
@@ -13,8 +14,15 @@ import com.felipeleres.customermanagement.repositories.ProcessoRepository;
 import com.felipeleres.customermanagement.services.exception.PagamentoException;
 import com.felipeleres.customermanagement.services.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class PagamentoService {
@@ -23,7 +31,50 @@ public class PagamentoService {
     private PagamentoRepository pagamentoRepository;
 
     @Autowired
+    private ParcelaRepository parcelaRepository;
+
+    @Autowired
     private ProcessoRepository processoRepository;
+
+
+    @Transactional
+    public Page<PagamentoDTO> buscarTodos(Pageable page){
+
+        Page<Pagamento> pag = pagamentoRepository.findAll(page);
+        return pag.map(x -> new PagamentoDTO(x));
+    }
+
+    @Transactional(readOnly = true)
+    public FinanceiroDTO totalRecebido(){
+
+        List<Parcela> parcelas = parcelaRepository.findAll();
+
+        BigDecimal totalPago = BigDecimal.ZERO;
+        BigDecimal totalEmAberto = BigDecimal.ZERO;
+        BigDecimal totalEmAtraso = BigDecimal.ZERO;
+
+        LocalDate hoje = LocalDate.now();
+
+
+        for(Parcela par : parcelas){
+
+            if (par.getDataParcela().isAfter(hoje)){
+                totalEmAberto = totalEmAberto.add(par.getValor());
+            }
+
+            if (par.getDataParcela().isBefore(hoje) && (par.getStatusPagamento() == StatusPagamento.EM_ATRASO || par.getStatusPagamento() == StatusPagamento.AGUARDANDO_PAGAMENTO) ){
+                totalEmAtraso = totalEmAtraso.add(par.getValor());
+            }
+
+            if(par.getStatusPagamento() == StatusPagamento.PAGO) {
+                totalPago = totalPago.add(par.getValor());
+            }
+        }
+
+        FinanceiroDTO dto =  new FinanceiroDTO(totalPago,totalEmAberto,totalEmAtraso);
+        return dto;
+    }
+
 
     @Transactional
     public PagamentoDTO cadastrarPagamento (PagamentoDTO pagamentoDTO){

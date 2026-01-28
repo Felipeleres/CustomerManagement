@@ -5,13 +5,14 @@ import com.felipeleres.customermanagement.entities.Parcela;
 import com.felipeleres.customermanagement.enums.StatusPagamento;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class ParcelaDTO {
 
 
     private Long id;
-    private Double valor;
+    private BigDecimal valor;
     private LocalDate dataParcela;
     private StatusPagamento statusPagamento;
     private Long pagamentoId;
@@ -20,7 +21,7 @@ public class ParcelaDTO {
 
     }
 
-    public ParcelaDTO(Long id, Double valor, LocalDate dataParcela, StatusPagamento statusPagamento, Long pagamento) {
+    public ParcelaDTO(Long id, BigDecimal valor, LocalDate dataParcela, StatusPagamento statusPagamento, Long pagamento) {
         this.id = id;
         this.valor = valor;
         this.dataParcela = dataParcela;
@@ -44,11 +45,11 @@ public class ParcelaDTO {
         this.id = id;
     }
 
-    public Double getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(Double valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 

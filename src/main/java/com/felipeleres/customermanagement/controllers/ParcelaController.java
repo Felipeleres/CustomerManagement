@@ -20,4 +20,10 @@ public class ParcelaController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<ParcelaDTO> consultarParcela(@PathVariable Long id){
+        ParcelaDTO dto = parcelaService.consultarParcela(id);
+        return ResponseEntity.ok(dto);
+    }
+
 }

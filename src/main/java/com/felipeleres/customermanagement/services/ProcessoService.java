@@ -1,9 +1,11 @@
 package com.felipeleres.customermanagement.services;
 
+import com.felipeleres.customermanagement.dto.FinanceiroDTO;
 import com.felipeleres.customermanagement.dto.ProcessoCliDTO;
 import com.felipeleres.customermanagement.dto.ProcessoDTO;
 import com.felipeleres.customermanagement.dto.ProcessoReturnDTO;
 import com.felipeleres.customermanagement.entities.Cliente;
+import com.felipeleres.customermanagement.entities.Pagamento;
 import com.felipeleres.customermanagement.entities.Processo;
 import com.felipeleres.customermanagement.repositories.ClienteRepository;
 import com.felipeleres.customermanagement.repositories.ProcessoRepository;
@@ -28,9 +30,9 @@ public class ProcessoService {
     public ClienteRepository clienteRepository;
 
     @Transactional(readOnly = true)
-    public List<ProcessoDTO> buscarProcessos(){
+    public List<ProcessoReturnDTO> buscarProcessos(){
         List<Processo> processos = processoRepository.findAll();
-        return processos.stream().map(x -> new ProcessoDTO(x)).toList();
+        return processos.stream().map(x -> new ProcessoReturnDTO(x)).toList();
     }
 
     @Transactional(readOnly = true)
@@ -39,7 +41,6 @@ public class ProcessoService {
         Processo processo = resultado.orElseThrow(() -> new ResourceNotFoundException("Processo não encontrado!"));
         return new ProcessoReturnDTO(processo);
     }
-
 
     @Transactional
     public ProcessoReturnDTO inserirProcesso(ProcessoCliDTO processoCliDTO){

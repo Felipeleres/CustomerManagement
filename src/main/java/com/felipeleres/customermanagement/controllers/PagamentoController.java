@@ -1,8 +1,14 @@
 package com.felipeleres.customermanagement.controllers;
 
+import com.felipeleres.customermanagement.dto.FinanceiroDTO;
 import com.felipeleres.customermanagement.dto.PagamentoDTO;
 import com.felipeleres.customermanagement.services.PagamentoService;
+import com.felipeleres.customermanagement.services.ProcessoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,6 +21,21 @@ public class PagamentoController {
 
     @Autowired
     PagamentoService pagamentoService;
+
+    @GetMapping
+    public ResponseEntity<Page<PagamentoDTO>> buscarPagamentos(Pageable page){
+        Page<PagamentoDTO> dto =  pagamentoService.buscarTodos(page);
+        PageRequest.of(0, 20, Sort.by("id").descending());
+        return ResponseEntity.ok().body(dto);
+    }
+
+    @GetMapping(value = "/total-pago")
+    public ResponseEntity<FinanceiroDTO> totalRecebido (){
+        FinanceiroDTO dto = pagamentoService.totalRecebido();
+        return ResponseEntity.ok().body(dto);
+    }
+
+
 
 
     @PostMapping

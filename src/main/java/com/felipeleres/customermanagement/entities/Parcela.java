@@ -3,6 +3,7 @@ package com.felipeleres.customermanagement.entities;
 import com.felipeleres.customermanagement.enums.StatusPagamento;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -12,7 +13,7 @@ public class Parcela {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Double valor;
+    private BigDecimal valor;
     private LocalDate dataParcela;
     private StatusPagamento statusPagamento;
 
@@ -24,7 +25,7 @@ public class Parcela {
 
     }
 
-    public Parcela(Long id, Double valor, LocalDate dataParcela, StatusPagamento statusPagamento,Pagamento pagamento) {
+    public Parcela(Long id, BigDecimal valor, LocalDate dataParcela, StatusPagamento statusPagamento,Pagamento pagamento) {
         this.id = id;
         this.valor = valor;
         this.dataParcela = dataParcela;
@@ -40,11 +41,11 @@ public class Parcela {
         this.id = id;
     }
 
-    public Double getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(Double valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 

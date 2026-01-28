@@ -6,6 +6,7 @@ import com.felipeleres.customermanagement.entities.Processo;
 import com.felipeleres.customermanagement.enums.StatusPagamento;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,14 +17,14 @@ public class PagamentoDTO {
     private StatusPagamento statusPagamento;
     private Long processoID;
     private Integer quantidadeParcelas;
-    private Double valorParcela;
+    private BigDecimal valorParcela;
     private List<ParcelaDTO> parcelas = new ArrayList<>();
 
     public PagamentoDTO(){
 
     }
 
-    public PagamentoDTO(Long id, StatusPagamento statusPagamento, Long processo, Integer quantidadeParcelas, Double valorParcela) {
+    public PagamentoDTO(Long id, StatusPagamento statusPagamento, Long processo, Integer quantidadeParcelas, BigDecimal valorParcela) {
         this.id = id;
         this.statusPagamento = statusPagamento;
         this.processoID = processo;
@@ -72,11 +73,11 @@ public class PagamentoDTO {
         this.quantidadeParcelas = quantidadeParcelas;
     }
 
-    public Double getValorParcela() {
+    public BigDecimal getValorParcela() {
         return valorParcela;
     }
 
-    public void setValorParcela(Double valorParcela) {
+    public void setValorParcela(BigDecimal valorParcela) {
         this.valorParcela = valorParcela;
     }
 

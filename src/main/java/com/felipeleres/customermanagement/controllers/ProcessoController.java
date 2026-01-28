@@ -20,8 +20,8 @@ public class ProcessoController {
     private ProcessoService processoService;
 
     @GetMapping
-    public ResponseEntity<List<ProcessoDTO>> buscarProcessos(){
-        List<ProcessoDTO> dto = processoService.buscarProcessos();
+    public ResponseEntity<List<ProcessoReturnDTO>> buscarProcessos(){
+        List<ProcessoReturnDTO> dto = processoService.buscarProcessos();
         return ResponseEntity.ok().body(dto);
     }
 

@@ -7,7 +7,9 @@ import com.felipeleres.customermanagement.services.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -17,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/cliente")
-public class ClienteController {
+public class    ClienteController {
 
     @Autowired
     private ClienteService clienteService;
@@ -25,6 +27,7 @@ public class ClienteController {
     @GetMapping
     public ResponseEntity<Page<ClienteDTO>> buscarClientes(Pageable pageable){
         Page<ClienteDTO> dto = clienteService.buscarTodos(pageable);
+        PageRequest.of(0, 20, Sort.by("id").descending());
         return ResponseEntity.ok().body(dto);
     }
 

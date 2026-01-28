@@ -4,6 +4,7 @@ import com.felipeleres.customermanagement.enums.StatusPagamento;
 import com.felipeleres.customermanagement.enums.FormaPagamento;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,10 @@ public class Pagamento {
     @JoinColumn(name = "processo_id")
     private Processo processo;
     private Integer quantidadeParcelas;
-    private Double valorParcela;
+    private BigDecimal valorParcela;
+    private BigDecimal valorTotal;
+
+
 
     @OneToMany(mappedBy = "pagamento",cascade = CascadeType.ALL)
     private List<Parcela> parcelas = new ArrayList<>();
@@ -29,12 +33,13 @@ public class Pagamento {
 
     }
 
-    public Pagamento(Long id, StatusPagamento statusPagamento, Processo processo, Integer quantidadeParcelas, Double valorParcela) {
+    public Pagamento(Long id, StatusPagamento statusPagamento, Processo processo, Integer quantidadeParcelas, BigDecimal valorParcela) {
         this.id = id;
         this.statusPagamento = statusPagamento;
         this.processo = processo;
         this.quantidadeParcelas = quantidadeParcelas;
         this.valorParcela = valorParcela;
+        this.valorTotal =  processo.getValor();
     }
 
     public Long getId() {
@@ -69,11 +74,11 @@ public class Pagamento {
         this.quantidadeParcelas = quantidadeParcelas;
     }
 
-    public Double getValorParcela() {
+    public BigDecimal getValorParcela() {
         return valorParcela;
     }
 
-    public void setValorParcela(Double valorParcela) {
+    public void setValorParcela(BigDecimal valorParcela) {
         this.valorParcela = valorParcela;
     }
 
@@ -90,6 +95,14 @@ public class Pagamento {
         parcelas.remove(parcela);
         parcela.setPagamento(null);
 
+    }
+
+    public BigDecimal getValorTotal(){
+        return valorTotal;
+    }
+
+    public void setValorTotal(BigDecimal valor){
+        this.valorTotal = valor;
     }
 
 

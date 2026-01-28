@@ -5,6 +5,7 @@ import com.felipeleres.customermanagement.enums.Situacao;
 import jakarta.persistence.*;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -26,7 +27,7 @@ public class Processo {
     private Pagamento pagamento;
     private Situacao situacao;
     private LocalDate data;
-    private Double valor;
+    private BigDecimal valor;
     private FormaPagamento formaPagamento;
 
 
@@ -34,7 +35,7 @@ public class Processo {
 
     }
 
-    public Processo(Long id, String numero, Cliente cliente, String descricao,Pagamento pagamento, Situacao situacao, LocalDate data, Double valor, FormaPagamento formaPagamento) {
+    public Processo(Long id, String numero, Cliente cliente, String descricao,Pagamento pagamento, Situacao situacao, LocalDate data, BigDecimal valor, FormaPagamento formaPagamento) {
         this.id = id;
         this.numero = numero;
         this.cliente = cliente;
@@ -94,11 +95,11 @@ public class Processo {
         this.data = data;
     }
 
-    public Double getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(Double valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 
