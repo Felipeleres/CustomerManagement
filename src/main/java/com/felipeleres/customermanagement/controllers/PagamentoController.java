@@ -2,6 +2,7 @@ package com.felipeleres.customermanagement.controllers;
 
 import com.felipeleres.customermanagement.dto.FinanceiroDTO;
 import com.felipeleres.customermanagement.dto.PagamentoDTO;
+import com.felipeleres.customermanagement.dto.PagamentoReturnDTO;
 import com.felipeleres.customermanagement.services.PagamentoService;
 import com.felipeleres.customermanagement.services.ProcessoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class PagamentoController {
     PagamentoService pagamentoService;
 
     @GetMapping
-    public ResponseEntity<Page<PagamentoDTO>> buscarPagamentos(Pageable page){
-        Page<PagamentoDTO> dto =  pagamentoService.buscarTodos(page);
+    public ResponseEntity<Page<PagamentoReturnDTO>> buscarPagamentos(Pageable page){
+        Page<PagamentoReturnDTO> dto =  pagamentoService.buscarTodos(page);
         PageRequest.of(0, 20, Sort.by("id").descending());
         return ResponseEntity.ok().body(dto);
     }

@@ -2,7 +2,6 @@ package com.felipeleres.customermanagement.dto;
 
 import com.felipeleres.customermanagement.entities.Processo;
 import com.felipeleres.customermanagement.enums.FormaPagamento;
-import com.felipeleres.customermanagement.enums.Situacao;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,14 +13,14 @@ public class ProcessoDTO {
     private String descricao;
     private LocalDate data;
     private BigDecimal valor;
-    private Situacao situacao;
+    private String situacao;
     private FormaPagamento formaPagamento;
 
     public ProcessoDTO(){
 
     }
 
-    public ProcessoDTO(Long id, String descricao, String numero, LocalDate data, BigDecimal valor,Situacao situacao,FormaPagamento formaPagamento) {
+    public ProcessoDTO(Long id, String descricao, String numero, LocalDate data, BigDecimal valor, String situacao,FormaPagamento formaPagamento) {
         this.id = id;
         this.descricao = descricao;
         this.numero = numero;
@@ -81,11 +80,11 @@ public class ProcessoDTO {
         this.valor = valor;
     }
 
-    public Situacao getSituacao() {
+    public String getSituacao() {
         return situacao;
     }
 
-    public void setSituacao(Situacao situacao) {
+    public void setSituacao(String situacao) {
         this.situacao = situacao;
     }
 

@@ -2,7 +2,6 @@ package com.felipeleres.customermanagement.dto;
 
 import com.felipeleres.customermanagement.entities.Processo;
 import com.felipeleres.customermanagement.enums.FormaPagamento;
-import com.felipeleres.customermanagement.enums.Situacao;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -19,7 +18,7 @@ public class ProcessoReturnDTO {
     @NotNull(message = "Campo requirido, informe um número de processo!")
     @Positive(message = "O valor deve ser positivo!")
     private BigDecimal valor;
-    private Situacao situacao;
+    private String situacao;
     private ClienteDTO cliente;
     private FormaPagamento formaPagamento;
 
@@ -27,7 +26,7 @@ public class ProcessoReturnDTO {
 
     }
 
-    public ProcessoReturnDTO(Long id, String descricao, String numero, LocalDate data, BigDecimal valor, Situacao situacao, ClienteDTO cliente, FormaPagamento formaPagamento) {
+    public ProcessoReturnDTO(Long id, String descricao, String numero, LocalDate data, BigDecimal valor, String situacao, ClienteDTO cliente, FormaPagamento formaPagamento) {
         this.id = id;
         this.descricao = descricao;
         this.numero = numero;
@@ -89,11 +88,11 @@ public class ProcessoReturnDTO {
         this.valor = valor;
     }
 
-    public Situacao getSituacao() {
+    public String getSituacao() {
         return situacao;
     }
 
-    public void setSituacao(Situacao situacao) {
+    public void setSituacao(String situacao) {
         this.situacao = situacao;
     }
 

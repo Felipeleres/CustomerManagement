@@ -1,7 +1,6 @@
 package com.felipeleres.customermanagement.entities;
 
 import com.felipeleres.customermanagement.enums.FormaPagamento;
-import com.felipeleres.customermanagement.enums.Situacao;
 import jakarta.persistence.*;
 
 
@@ -25,7 +24,7 @@ public class Processo {
 
     @OneToOne(mappedBy = "processo")
     private Pagamento pagamento;
-    private Situacao situacao;
+    private String situacao;
     private LocalDate data;
     private BigDecimal valor;
     private FormaPagamento formaPagamento;
@@ -35,7 +34,7 @@ public class Processo {
 
     }
 
-    public Processo(Long id, String numero, Cliente cliente, String descricao,Pagamento pagamento, Situacao situacao, LocalDate data, BigDecimal valor, FormaPagamento formaPagamento) {
+    public Processo(Long id, String numero, Cliente cliente, String descricao,Pagamento pagamento, String situacao, LocalDate data, BigDecimal valor, FormaPagamento formaPagamento) {
         this.id = id;
         this.numero = numero;
         this.cliente = cliente;
@@ -79,11 +78,11 @@ public class Processo {
         this.cliente = cliente;
     }
 
-    public Situacao getSituacao() {
+    public String getSituacao() {
         return situacao;
     }
 
-    public void setSituacao(Situacao situacao) {
+    public void setSituacao(String situacao) {
         this.situacao = situacao;
     }
 

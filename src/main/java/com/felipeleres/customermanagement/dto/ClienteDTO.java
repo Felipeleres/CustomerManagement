@@ -18,22 +18,28 @@ public class ClienteDTO {
 
     @NotNull(message = "Campo requirido, deve informar o cpf do cliente!")
     private String cpf;
+    private String email;
+    private String telefone;
 
 
     public ClienteDTO (){
 
     }
 
-    public ClienteDTO(Long id, String name, String cpf) {
+    public ClienteDTO(Long id, String name, String cpf, String email, String telefone) {
         this.id = id;
         this.name = name;
         this.cpf = cpf;
+        this.email = email;
+        this.telefone = telefone;
     }
 
     public ClienteDTO (Cliente cliente){
         id = cliente.getId();
         name = cliente.getName();
         cpf = cliente.getCpf();
+        email = cliente.getEmail();
+        telefone = cliente.getTelefone();
     }
 
 
@@ -59,6 +65,22 @@ public class ClienteDTO {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    public void setEmail (String email){
+        this.email = email;
+    }
+
+    public String getTelefone(){
+        return telefone;
+    }
+
+    public void setTelefone(String telefone){
+        this.telefone = telefone;
     }
 
 

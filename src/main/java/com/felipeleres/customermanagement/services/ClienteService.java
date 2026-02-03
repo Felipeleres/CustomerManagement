@@ -46,6 +46,8 @@ public class ClienteService {
         Cliente cliente = new Cliente();
         cliente.setName(clienteDTO.getName());
         cliente.setCpf(clienteDTO.getCpf());
+        cliente.setEmail(clienteDTO.getEmail());
+        cliente.setTelefone(clienteDTO.getTelefone());
 
         cliente = clienteRepository.save(cliente);
 
@@ -61,6 +63,8 @@ public class ClienteService {
 
             cliente.setName(clienteDTO.getName());
             cliente.setCpf(clienteDTO.getCpf());
+            cliente.setEmail(clienteDTO.getEmail());
+            cliente.setTelefone(clienteDTO.getTelefone());
             cliente = clienteRepository.save(cliente);
             return new ClienteDTO(cliente);
         } catch(EntityNotFoundException e){

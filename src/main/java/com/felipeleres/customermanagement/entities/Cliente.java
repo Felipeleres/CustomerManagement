@@ -14,6 +14,8 @@ public class Cliente {
     private Long id;
     private String name;
     private String cpf;
+    private String email;
+    private String telefone;
     @OneToMany(mappedBy = "cliente")
     private List<Processo> processos = new ArrayList<>();
 
@@ -23,10 +25,12 @@ public class Cliente {
 
     }
 
-    public Cliente(Long id, String name, String cpf) {
+    public Cliente(Long id, String name, String cpf,String email, String telefone) {
         this.id = id;
         this.name = name;
         this.cpf = cpf;
+        this.email = email;
+        this.telefone = telefone;
     }
 
     public Long getId() {
@@ -51,6 +55,22 @@ public class Cliente {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    public void setEmail(String email){
+        this.email =  email;
+    }
+
+    public String getTelefone(){
+        return telefone;
+    }
+
+    public void setTelefone(String telefone){
+        this.telefone = telefone;
     }
 
     public List<Processo> getProcessos() {

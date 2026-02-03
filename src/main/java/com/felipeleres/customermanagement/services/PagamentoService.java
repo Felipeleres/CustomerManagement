@@ -1,9 +1,6 @@
 package com.felipeleres.customermanagement.services;
 
-import com.felipeleres.customermanagement.dto.FinanceiroDTO;
-import com.felipeleres.customermanagement.dto.PagamentoDTO;
-import com.felipeleres.customermanagement.dto.ParcelaDTO;
-import com.felipeleres.customermanagement.dto.ProcessoDTO;
+import com.felipeleres.customermanagement.dto.*;
 import com.felipeleres.customermanagement.entities.Pagamento;
 import com.felipeleres.customermanagement.entities.Parcela;
 import com.felipeleres.customermanagement.entities.Processo;
@@ -38,10 +35,10 @@ public class PagamentoService {
 
 
     @Transactional
-    public Page<PagamentoDTO> buscarTodos(Pageable page){
+    public Page<PagamentoReturnDTO> buscarTodos(Pageable page){
 
         Page<Pagamento> pag = pagamentoRepository.findAll(page);
-        return pag.map(x -> new PagamentoDTO(x));
+        return pag.map(x -> new PagamentoReturnDTO(x));
     }
 
     @Transactional(readOnly = true)

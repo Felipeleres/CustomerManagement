@@ -23,6 +23,9 @@ public class ClienteProDTO {
     @NotNull(message = "Campo requirido, deve informar o cpf do cliente!")
     private String cpf;
 
+    private String email;
+    private String telefone;
+
     private List<ProcessoDTO> processosDTO = new ArrayList<>();
 
 
@@ -30,10 +33,13 @@ public class ClienteProDTO {
 
     }
 
-    public ClienteProDTO(Long id, String name, String cpf) {
+    public ClienteProDTO(Long id, String name, String cpf,String email, String telefone) {
         this.id = id;
         this.name = name;
         this.cpf = cpf;
+        this.email = email;
+        this.telefone = telefone;
+
     }
 
     public ClienteProDTO(Cliente cliente){
@@ -75,6 +81,22 @@ public class ClienteProDTO {
 
     public void addProcessosDTO (ProcessoDTO processoDTO){
         processosDTO.add(processoDTO);
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    public void setEmail (String email){
+        this.email = email;
+    }
+
+    public String getTelefone(){
+        return telefone;
+    }
+
+    public void setTelefone(String telefone){
+        this.telefone = telefone;
     }
 
 }
