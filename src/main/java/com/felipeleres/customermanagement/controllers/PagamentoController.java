@@ -51,4 +51,10 @@ public class PagamentoController {
         PagamentoDTO dto = pagamentoService.atualizarPagamento(id,pagamentoDTO);
         return ResponseEntity.ok(dto);
     }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deletar (@PathVariable Long id){
+        pagamentoService.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
 }

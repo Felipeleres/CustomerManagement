@@ -26,23 +26,19 @@ public class Processo {
     private Pagamento pagamento;
     private String situacao;
     private LocalDate data;
-    private BigDecimal valor;
-    private FormaPagamento formaPagamento;
 
 
     public Processo(){
 
     }
 
-    public Processo(Long id, String numero, Cliente cliente, String descricao,Pagamento pagamento, String situacao, LocalDate data, BigDecimal valor, FormaPagamento formaPagamento) {
+    public Processo(Long id, String numero, Cliente cliente, String descricao,Pagamento pagamento, String situacao, LocalDate data) {
         this.id = id;
         this.numero = numero;
         this.cliente = cliente;
         this.descricao = descricao;
         this.situacao = situacao;
         this.data = data;
-        this.valor = valor;
-        this.formaPagamento = formaPagamento;
         this.pagamento = pagamento;
     }
 
@@ -92,22 +88,6 @@ public class Processo {
 
     public void setData(LocalDate data) {
         this.data = data;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
-    public FormaPagamento getFormaPagamento() {
-        return formaPagamento;
-    }
-
-    public void setFormaPagamento(FormaPagamento formaPagamento) {
-        this.formaPagamento = formaPagamento;
     }
 
     public Pagamento getPagamento() {

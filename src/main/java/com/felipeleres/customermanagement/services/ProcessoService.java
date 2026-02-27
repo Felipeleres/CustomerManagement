@@ -9,10 +9,13 @@ import com.felipeleres.customermanagement.entities.Pagamento;
 import com.felipeleres.customermanagement.entities.Processo;
 import com.felipeleres.customermanagement.repositories.ClienteRepository;
 import com.felipeleres.customermanagement.repositories.ProcessoRepository;
+import com.felipeleres.customermanagement.services.exception.DataBaseException;
 import com.felipeleres.customermanagement.services.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +34,8 @@ public class ProcessoService {
 
     @Transactional(readOnly = true)
     public List<ProcessoReturnDTO> buscarProcessos(){
-        List<Processo> processos = processoRepository.findAll();
+        //List<Processo> processos = processoRepository.findAll();
+        List<Processo> processos = processoRepository.buscarTodosProcessos();
         return processos.stream().map(x -> new ProcessoReturnDTO(x)).toList();
     }
 
@@ -49,10 +53,8 @@ public class ProcessoService {
         processo.setNumero(processoCliDTO.getNumero());
         processo.setDescricao(processoCliDTO.getDescricao());
         processo.setData(processoCliDTO.getData());
-        processo.setValor(processoCliDTO.getValor());
         processo.setSituacao(processoCliDTO.getSituacao());
         processo.setCliente(cliente);
-        processo.setFormaPagamento(processoCliDTO.getFormaPagamento());
         processo = processoRepository.save(processo);
 
         return new ProcessoReturnDTO(processo);
@@ -66,15 +68,31 @@ public class ProcessoService {
             processo.setNumero(processoDTO.getNumero());
             processo.setDescricao(processoDTO.getDescricao());
             processo.setData(processoDTO.getData());
-            processo.setValor(processoDTO.getValor());
             processo.setSituacao(processoDTO.getSituacao());
-            processo.setFormaPagamento(processoDTO.getFormaPagamento());
 
+            Cliente cliente = clienteRepository.getReferenceById(processo.getCliente().getId()
+            );
+            processo.setCliente(cliente);
             processo = processoRepository.save(processo);
             return new ProcessoDTO(processo);
         } catch(EntityNotFoundException e){
             throw new ResourceNotFoundException("Processo não encontrado!");
         }
+    }
+
+    @Transactional(propagation =  Propagation.SUPPORTS)
+    public void deletar(Long id){
+
+        if(!processoRepository.existsById(id)){
+            throw new ResourceNotFoundException("Processo não encontrado!");
+        }
+
+        try{
+            processoRepository.deleteById(id);
+        }catch (DataIntegrityViolationException e ){
+            throw  new DataBaseException("Falha de integridade referencial!");
+        }
+
     }
 
 }

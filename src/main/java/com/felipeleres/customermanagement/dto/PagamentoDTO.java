@@ -17,19 +17,19 @@ public class PagamentoDTO {
     private StatusPagamento statusPagamento;
     private Long processoID;
     private Integer quantidadeParcelas;
-    private BigDecimal valorParcela;
+    private BigDecimal valorTotal;
     private List<ParcelaDTO> parcelas = new ArrayList<>();
 
     public PagamentoDTO(){
 
     }
 
-    public PagamentoDTO(Long id, StatusPagamento statusPagamento, Long processo, Integer quantidadeParcelas, BigDecimal valorParcela) {
+    public PagamentoDTO(Long id, StatusPagamento statusPagamento, Long processo, Integer quantidadeParcelas,BigDecimal valorTotal) {
         this.id = id;
         this.statusPagamento = statusPagamento;
         this.processoID = processo;
         this.quantidadeParcelas = quantidadeParcelas;
-        this.valorParcela = valorParcela;
+        this.valorTotal =  valorTotal;
     }
 
 
@@ -38,7 +38,11 @@ public class PagamentoDTO {
         statusPagamento = pagamento.getStatusPagamento();
         processoID = pagamento.getProcesso().getId();
         quantidadeParcelas = pagamento.getQuantidadeParcelas();
-        valorParcela = pagamento.getValorParcela();
+        valorTotal = pagamento.getValorTotal();
+
+        for(Parcela par : pagamento.getParcelas()){
+            parcelas.add(new ParcelaDTO(par));
+        }
     }
 
     public Long getId() {
@@ -73,15 +77,7 @@ public class PagamentoDTO {
         this.quantidadeParcelas = quantidadeParcelas;
     }
 
-    public BigDecimal getValorParcela() {
-        return valorParcela;
-    }
-
-    public void setValorParcela(BigDecimal valorParcela) {
-        this.valorParcela = valorParcela;
-    }
-
-    public void addParcela(ParcelaDTO parcela){
+    public void addParcelas(ParcelaDTO parcela){
         parcelas.add(parcela);
     }
 
@@ -93,4 +89,7 @@ public class PagamentoDTO {
         parcelas.remove(parcela);
     }
 
+    public BigDecimal getValorTotal() {return valorTotal;}
+
+    public void setValorTotal(BigDecimal valorTotal) {this.valorTotal = valorTotal;}
 }

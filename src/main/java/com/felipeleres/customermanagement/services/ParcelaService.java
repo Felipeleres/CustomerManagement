@@ -23,7 +23,8 @@ public class ParcelaService {
     @Transactional
     public ParcelaDTO atualizarParcela (Long id , ParcelaDTO parcelaDTO){
         Parcela parcela = parcelaRepository.getReferenceById(id);
-        if(parcela != null) {
+        if(parcelaRepository.existsById(id)) {
+
             parcela.setStatusPagamento(parcelaDTO.getStatusPagamento());
             parcela = parcelaRepository.save(parcela);
         }
@@ -39,6 +40,12 @@ public class ParcelaService {
         Optional<Parcela> resultado = parcelaRepository.findById(id);
         Parcela par = resultado.orElseThrow(() -> new ResourceNotFoundException("Parcela não encontrada!"));
         return new ParcelaDTO(par);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ParcelaDTO> consultarParcelas(Pageable pageable){
+        Page<ParcelaDTO> resultado = parcelaRepository.buscarParcelas(pageable);
+        return resultado;
     }
 
 }

@@ -16,24 +16,20 @@ public class ProcessoCliDTO {
     private LocalDate data;
     @NotNull(message = "Campo requirido, informe um número de processo!")
     @Positive(message = "O valor deve ser positivo!")
-    private BigDecimal valor;
     private String situacao;
     private Long clienteId;
-    private FormaPagamento formaPagamento;
 
     public ProcessoCliDTO(){
 
     }
 
-    public ProcessoCliDTO(Long id, String descricao, String numero, LocalDate data, BigDecimal valor, String situacao, Long clienteId,FormaPagamento formaPagamento) {
+    public ProcessoCliDTO(Long id, String descricao, String numero, LocalDate data, String situacao, Long clienteId) {
         this.id = id;
         this.descricao = descricao;
         this.numero = numero;
         this.data = data;
-        this.valor = valor;
         this.situacao = situacao;
         this.clienteId = clienteId;
-        this.formaPagamento = formaPagamento;
     }
 
     public Long getId() {
@@ -68,14 +64,6 @@ public class ProcessoCliDTO {
         this.descricao = descricao;
     }
 
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
     public String getSituacao() {
         return situacao;
     }
@@ -90,10 +78,4 @@ public class ProcessoCliDTO {
 
     public void setClienteId(Long clienteId){this.clienteId = clienteId;}
 
-    public FormaPagamento getFormaPagamento() {
-        return formaPagamento;
-    }
-    public void setFormaPagamento(FormaPagamento formaPagamento) {
-        this.formaPagamento = formaPagamento;
-    }
 }

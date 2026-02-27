@@ -8,12 +8,15 @@ import com.felipeleres.customermanagement.enums.StatusPagamento;
 import com.felipeleres.customermanagement.repositories.PagamentoRepository;
 import com.felipeleres.customermanagement.repositories.ParcelaRepository;
 import com.felipeleres.customermanagement.repositories.ProcessoRepository;
+import com.felipeleres.customermanagement.services.exception.DataBaseException;
 import com.felipeleres.customermanagement.services.exception.PagamentoException;
 import com.felipeleres.customermanagement.services.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -34,11 +37,11 @@ public class PagamentoService {
     private ProcessoRepository processoRepository;
 
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<PagamentoReturnDTO> buscarTodos(Pageable page){
 
-        Page<Pagamento> pag = pagamentoRepository.findAll(page);
-        return pag.map(x -> new PagamentoReturnDTO(x));
+        Page<PagamentoReturnDTO> pag = pagamentoRepository.buscarPagamentos(page);
+        return pag;
     }
 
     @Transactional(readOnly = true)
@@ -82,18 +85,19 @@ public class PagamentoService {
         pagamento.setStatusPagamento(pagamentoDTO.getStatusPagamento());
         pagamento.setProcesso(processo);
         pagamento.setQuantidadeParcelas(pagamentoDTO.getQuantidadeParcelas());
-        pagamento.setValorParcela(pagamentoDTO.getValorParcela());
+        pagamento.setValorTotal(pagamentoDTO.getValorTotal());
 
         for(ParcelaDTO par: pagamentoDTO.getParcelas()){
             Parcela parcela = dtoToEntity(par);
+            parcela.setPagamento(pagamento);
             pagamento.addParcela(parcela);
         }
 
         pagamento = pagamentoRepository.save(pagamento);
 
         PagamentoDTO dto = new PagamentoDTO(pagamento);
-        for(Parcela parce : pagamento.getParcelas()){
-            dto.addParcela(new ParcelaDTO(parce));
+        for(Parcela parcela : pagamento.getParcelas()){
+            dto.addParcelas(new ParcelaDTO(parcela));
         }
         return dto;
     }
@@ -101,29 +105,40 @@ public class PagamentoService {
     @Transactional
     public PagamentoDTO atualizarPagamento(Long id, PagamentoDTO pagamentoDTO){
 
-         Pagamento pagamento = pagamentoRepository.getReferenceById(id);
 
-         if(pagamento == null){
-
+         if(!pagamentoRepository.existsById(id)){
              throw new ResourceNotFoundException("Pagamento não encontrado!");
          }
-         else{
 
-             for(Parcela par : pagamento.getParcelas()){
-                 if (par.getStatusPagamento().equals(StatusPagamento.AGUARDANDO_PAGAMENTO)||par.getStatusPagamento().equals(StatusPagamento.EM_ATRASO)){
-                     throw new PagamentoException("Existem pendências no pagamento");
-                 }
-             }
-             pagamento.setStatusPagamento(pagamentoDTO.getStatusPagamento());
-             pagamento = pagamentoRepository.save(pagamento);
+        Pagamento pagamento = pagamentoRepository.getReferenceById(id);
 
-             PagamentoDTO dto = new PagamentoDTO(pagamento);
+        for(Parcela par : pagamento.getParcelas()){
+            if (par.getStatusPagamento().equals(StatusPagamento.AGUARDANDO_PAGAMENTO)||par.getStatusPagamento().equals(StatusPagamento.EM_ATRASO)){
+                throw new PagamentoException("Existem pendências no pagamento");
+            }
+        }
+        pagamento.setStatusPagamento(pagamentoDTO.getStatusPagamento());
+        pagamento.setQuantidadeParcelas(pagamentoDTO.getQuantidadeParcelas());
+        pagamento.setValorTotal(pagamentoDTO.getValorTotal());
 
-             for(Parcela parce : pagamento.getParcelas()){
-                 dto.addParcela(new ParcelaDTO(parce));
-             }
-             return dto;
+        pagamento.limparParcelas();
+
+        for(ParcelaDTO par : pagamentoDTO.getParcelas()){
+            Parcela parcela = new Parcela();
+            parcela.setStatusPagamento(par.getStatusPagamento());
+            parcela.setDataParcela(par.getDataParcela());
+            parcela.setValor(par.getValor());
+            pagamento.addParcela(parcela);
+        }
+
+         pagamento = pagamentoRepository.save(pagamento);
+
+         PagamentoDTO dto = new PagamentoDTO(pagamento);
+
+         for(Parcela parce : pagamento.getParcelas()){
+             dto.addParcelas(new ParcelaDTO(parce));
          }
+         return dto;
 
     }
 
@@ -135,6 +150,16 @@ public class PagamentoService {
         return parcela;
     }
 
-
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void deletar (Long id){
+        if(!pagamentoRepository.existsById(id)){
+            throw new ResourceNotFoundException("Pagamento não localizado! ");
+        }
+        try {
+            pagamentoRepository.deleteById(id);
+        }catch(DataIntegrityViolationException e){
+            throw new DataBaseException("Falha de integridade referencial!");
+        }
+    }
 
 }

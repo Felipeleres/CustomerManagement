@@ -21,25 +21,23 @@ public class Pagamento {
     @JoinColumn(name = "processo_id")
     private Processo processo;
     private Integer quantidadeParcelas;
-    private BigDecimal valorParcela;
     private BigDecimal valorTotal;
 
 
 
-    @OneToMany(mappedBy = "pagamento",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pagamento",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Parcela> parcelas = new ArrayList<>();
 
     public Pagamento(){
 
     }
 
-    public Pagamento(Long id, StatusPagamento statusPagamento, Processo processo, Integer quantidadeParcelas, BigDecimal valorParcela) {
+    public Pagamento(Long id, StatusPagamento statusPagamento, Processo processo, Integer quantidadeParcelas,BigDecimal valorTotal) {
         this.id = id;
         this.statusPagamento = statusPagamento;
         this.processo = processo;
         this.quantidadeParcelas = quantidadeParcelas;
-        this.valorParcela = valorParcela;
-        this.valorTotal =  processo.getValor();
+        this.valorTotal =  valorTotal;
     }
 
     public Long getId() {
@@ -74,14 +72,6 @@ public class Pagamento {
         this.quantidadeParcelas = quantidadeParcelas;
     }
 
-    public BigDecimal getValorParcela() {
-        return valorParcela;
-    }
-
-    public void setValorParcela(BigDecimal valorParcela) {
-        this.valorParcela = valorParcela;
-    }
-
     public List<Parcela> getParcelas(){
         return parcelas;
     }
@@ -95,6 +85,10 @@ public class Pagamento {
         parcelas.remove(parcela);
         parcela.setPagamento(null);
 
+    }
+
+    public void limparParcelas(){
+        parcelas.clear();
     }
 
     public BigDecimal getValorTotal(){

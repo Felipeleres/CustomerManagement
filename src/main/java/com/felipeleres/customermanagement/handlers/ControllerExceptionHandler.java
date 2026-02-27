@@ -3,6 +3,8 @@ package com.felipeleres.customermanagement.handlers;
 import com.felipeleres.customermanagement.dto.CustomError;
 import com.felipeleres.customermanagement.dto.FieldMessage;
 import com.felipeleres.customermanagement.dto.ValidationError;
+import com.felipeleres.customermanagement.services.exception.DadosIncompletoException;
+import com.felipeleres.customermanagement.services.exception.DataBaseException;
 import com.felipeleres.customermanagement.services.exception.PagamentoException;
 import com.felipeleres.customermanagement.services.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,6 +45,19 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status).body(error);
     }
 
+    @ExceptionHandler({DataBaseException.class})
+    public ResponseEntity<CustomError> PagamentoException (DataBaseException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        CustomError error =  new CustomError(Instant.now(),status.value(),e.getMessage(),request.getRequestURI());
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(DadosIncompletoException.class)
+    public ResponseEntity<CustomError> DadosIncompletoException (DadosIncompletoException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+        CustomError error = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(error);
+    }
 
 
 }

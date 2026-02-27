@@ -46,4 +46,11 @@ public class ProcessoController {
         return ResponseEntity.ok(processoDTO);
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deletarProcesso(@PathVariable Long id){
+        processoService.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

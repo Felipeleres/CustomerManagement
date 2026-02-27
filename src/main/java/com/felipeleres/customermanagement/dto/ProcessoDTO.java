@@ -12,22 +12,22 @@ public class ProcessoDTO {
     private String numero;
     private String descricao;
     private LocalDate data;
-    private BigDecimal valor;
     private String situacao;
-    private FormaPagamento formaPagamento;
+    private String clienteNome;
+    private Long clienteId;
 
     public ProcessoDTO(){
 
     }
 
-    public ProcessoDTO(Long id, String descricao, String numero, LocalDate data, BigDecimal valor, String situacao,FormaPagamento formaPagamento) {
+    public ProcessoDTO(Long id, String descricao, String numero, LocalDate data, String situacao,String clienteNome,Long clienteId) {
         this.id = id;
         this.descricao = descricao;
         this.numero = numero;
         this.data = data;
-        this.valor = valor;
         this.situacao = situacao;
-        this.formaPagamento = formaPagamento;
+        this.clienteNome = clienteNome;
+        this.clienteId = clienteId;
     }
 
     public ProcessoDTO(Processo processo) {
@@ -35,9 +35,9 @@ public class ProcessoDTO {
         descricao = processo.getDescricao();
         numero = processo.getNumero();
         data = processo.getData();
-        valor = processo.getValor();
         situacao = processo.getSituacao();
-        formaPagamento = processo.getFormaPagamento();
+        clienteNome = processo.getCliente().getName();
+        clienteId = processo.getCliente().getId();
     }
 
     public Long getId() {
@@ -72,14 +72,6 @@ public class ProcessoDTO {
         this.descricao = descricao;
     }
 
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
     public String getSituacao() {
         return situacao;
     }
@@ -88,11 +80,19 @@ public class ProcessoDTO {
         this.situacao = situacao;
     }
 
-    public FormaPagamento getFormaPagamento() {
-        return formaPagamento;
+    public String getClienteNome() {
+        return clienteNome;
     }
 
-    public void setFormaPagamento(FormaPagamento formaPagamento) {
-        this.formaPagamento = formaPagamento;
+    public void setClienteNome(String clienteNome) {
+        this.clienteNome = clienteNome;
+    }
+
+    public Long getClienteId() {
+        return clienteId;
+    }
+
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
     }
 }

@@ -17,24 +17,20 @@ public class ProcessoReturnDTO {
     private LocalDate data;
     @NotNull(message = "Campo requirido, informe um número de processo!")
     @Positive(message = "O valor deve ser positivo!")
-    private BigDecimal valor;
     private String situacao;
     private ClienteDTO cliente;
-    private FormaPagamento formaPagamento;
 
     public ProcessoReturnDTO(){
 
     }
 
-    public ProcessoReturnDTO(Long id, String descricao, String numero, LocalDate data, BigDecimal valor, String situacao, ClienteDTO cliente, FormaPagamento formaPagamento) {
+    public ProcessoReturnDTO(Long id, String descricao, String numero, LocalDate data, String situacao, ClienteDTO cliente) {
         this.id = id;
         this.descricao = descricao;
         this.numero = numero;
         this.data = data;
-        this.valor = valor;
         this.situacao = situacao;
         this.cliente = cliente;
-        this.formaPagamento = formaPagamento;
     }
 
     public ProcessoReturnDTO(Processo processo) {
@@ -42,10 +38,8 @@ public class ProcessoReturnDTO {
         descricao = processo.getDescricao();
         numero = processo.getNumero();
         data = processo.getData();
-        valor = processo.getValor();
         situacao = processo.getSituacao();
         cliente =  new ClienteDTO(processo.getCliente());
-        formaPagamento = processo.getFormaPagamento();
     }
 
     public Long getId() {
@@ -80,14 +74,6 @@ public class ProcessoReturnDTO {
         this.descricao = descricao;
     }
 
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
     public String getSituacao() {
         return situacao;
     }
@@ -104,10 +90,4 @@ public class ProcessoReturnDTO {
         this.cliente = cliente;
     }
 
-    public FormaPagamento getFormaPagamento() {
-        return formaPagamento;
-    }
-    public void setFormaPagamento(FormaPagamento formaPagamento) {
-        this.formaPagamento = formaPagamento;
-    }
 }

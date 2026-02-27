@@ -1,6 +1,7 @@
 package com.felipeleres.customermanagement.dto;
 
 import com.felipeleres.customermanagement.entities.Pagamento;
+import com.felipeleres.customermanagement.entities.Parcela;
 import com.felipeleres.customermanagement.enums.StatusPagamento;
 
 import java.math.BigDecimal;
@@ -12,30 +13,32 @@ public class PagamentoReturnDTO {
 
     private Long id;
     private StatusPagamento statusPagamento;
-    private ProcessoDTO processo;
+    private Long processoId;
     private Integer quantidadeParcelas;
-    private BigDecimal valorParcela;
-    private List<ParcelaDTO> parcelas = new ArrayList<>();
+    private BigDecimal valorTotal;
+    private String nomeCliente;
 
     public PagamentoReturnDTO(){
 
     }
 
-    public PagamentoReturnDTO(Long id, StatusPagamento statusPagamento, ProcessoDTO processo, Integer quantidadeParcelas, BigDecimal valorParcela) {
+    public PagamentoReturnDTO(Long id, StatusPagamento statusPagamento, Long processoId, Integer quantidadeParcelas,BigDecimal valorTotal,String nomeCliente) {
         this.id = id;
         this.statusPagamento = statusPagamento;
-        this.processo = processo;
+        this.processoId = processoId;
         this.quantidadeParcelas = quantidadeParcelas;
-        this.valorParcela = valorParcela;
+        this.valorTotal = valorTotal;
+        this.nomeCliente = nomeCliente;
     }
 
 
     public PagamentoReturnDTO(Pagamento pagamento) {
         id = pagamento.getId();
         statusPagamento = pagamento.getStatusPagamento();
-        processo = new ProcessoDTO(pagamento.getProcesso());
+        processoId = pagamento.getProcesso().getId();
         quantidadeParcelas = pagamento.getQuantidadeParcelas();
-        valorParcela = pagamento.getValorParcela();
+        valorTotal = pagamento.getValorTotal();
+        nomeCliente = pagamento.getProcesso().getCliente().getName();
     }
 
     public Long getId() {
@@ -54,12 +57,12 @@ public class PagamentoReturnDTO {
         this.statusPagamento = statusPagamento;
     }
 
-    public ProcessoDTO getProcesso() {
-        return processo;
+    public Long getProcessoId() {
+        return processoId;
     }
 
-    public void setProcesso(ProcessoDTO processo) {
-        this.processo = processo;
+    public void setProcessoId(Long processoId) {
+        this.processoId = processoId;
     }
 
     public Integer getQuantidadeParcelas() {
@@ -70,24 +73,15 @@ public class PagamentoReturnDTO {
         this.quantidadeParcelas = quantidadeParcelas;
     }
 
-    public BigDecimal getValorParcela() {
-        return valorParcela;
-    }
+    public BigDecimal getValorTotal() {return valorTotal;}
 
-    public void setValorParcela(BigDecimal valorParcela) {
-        this.valorParcela = valorParcela;
-    }
+    public void setValorTotal(BigDecimal valorTotal) {this.valorTotal = valorTotal;}
 
-    public void addParcela(ParcelaDTO parcela){
-        parcelas.add(parcela);
+    public String getNomeCliente(){
+        return nomeCliente;
     }
-
-    public List<ParcelaDTO> getParcelas(){
-        return parcelas;
-    }
-
-    public void removerParcela(ParcelaDTO parcela){
-        parcelas.remove(parcela);
+    public void setNomeCliente(String nome){
+        nomeCliente = nome;
     }
 
 }
