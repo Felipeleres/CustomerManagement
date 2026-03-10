@@ -1,5 +1,6 @@
 package com.felipeleres.customermanagement.repositories;
 
+import com.felipeleres.customermanagement.dto.FinanceiroDTO;
 import com.felipeleres.customermanagement.dto.PagamentoReturnDTO;
 import com.felipeleres.customermanagement.entities.Pagamento;
 import com.felipeleres.customermanagement.entities.Processo;
@@ -29,5 +30,6 @@ public interface PagamentoRepository extends JpaRepository<Pagamento,Long > {
             LEFT JOIN proce.cliente cli
             """)
     public Page<PagamentoReturnDTO> buscarPagamentos(Pageable pageable);
+
 
 }

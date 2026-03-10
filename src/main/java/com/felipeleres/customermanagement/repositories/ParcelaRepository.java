@@ -1,12 +1,15 @@
 package com.felipeleres.customermanagement.repositories;
 
 
+import com.felipeleres.customermanagement.dto.FinanceiroDTO;
 import com.felipeleres.customermanagement.dto.ParcelaDTO;
 import com.felipeleres.customermanagement.entities.Parcela;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface ParcelaRepository extends JpaRepository<Parcela,Long > {
 
@@ -19,6 +22,12 @@ public interface ParcelaRepository extends JpaRepository<Parcela,Long > {
             """)
     Page<ParcelaDTO> buscarParcelas(Pageable pageable);
 
-
+    @Query("""
+            SELECT p FROM Parcela p 
+            LEFT JOIN FETCH p.pagamento pag
+            LEFT JOIN FETCH pag.processo pro
+            LEFT JOIN FETCH pro.cliente 
+            """)
+    List<Parcela> buscarFinanceiro();
 
 }

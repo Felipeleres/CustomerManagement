@@ -47,7 +47,7 @@ public class PagamentoService {
     @Transactional(readOnly = true)
     public FinanceiroDTO totalRecebido(){
 
-        List<Parcela> parcelas = parcelaRepository.findAll();
+        List<Parcela> parcelas = parcelaRepository.buscarFinanceiro();
 
         BigDecimal totalPago = BigDecimal.ZERO;
         BigDecimal totalEmAberto = BigDecimal.ZERO;
