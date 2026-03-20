@@ -14,6 +14,7 @@ public class Cliente {
     private Long id;
     private String name;
     private String cpf;
+    @Column(unique = true)
     private String email;
     private String telefone;
     @OneToMany(mappedBy = "cliente")
