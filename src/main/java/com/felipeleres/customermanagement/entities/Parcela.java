@@ -15,6 +15,7 @@ public class Parcela {
     private Long id;
     private BigDecimal valor;
     private LocalDate dataParcela;
+    @Enumerated(EnumType.STRING)
     private StatusPagamento statusPagamento;
 
     @ManyToOne

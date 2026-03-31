@@ -37,6 +37,7 @@ import org.springframework.security.oauth2.server.authorization.settings.OAuth2T
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.oauth2.server.authorization.token.*;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -48,6 +49,9 @@ import java.util.UUID;
 
 @Configuration
 public class AuthorizationServerConfig {
+
+	@Autowired
+	private CorsConfigurationSource corsConfigurationSource;
 
 	@Value("${security.client-id}")
 	private String clientId;
@@ -75,6 +79,8 @@ public class AuthorizationServerConfig {
 
 		http.oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(Customizer.withDefaults()));
 		// @formatter:on
+
+		http.cors(cors -> cors.configurationSource(corsConfigurationSource));
 
 		return http.build();
 	}
@@ -187,4 +193,8 @@ public class AuthorizationServerConfig {
 		}
 		return keyPair;
 	}
+
+
+
+
 }
