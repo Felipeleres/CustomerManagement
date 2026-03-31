@@ -1,38 +1,40 @@
-# Sistema de Gestão para advogados autônomos
+# Sistema de Gestão para Advogada Autônoma
 
-Este é um projeto back-end de um sistema de gestão para advogados autônomos, desenvolvido com foco no controle de clientes, processos e financeiro.
+Sistema web desenvolvido para substituir o uso de planilhas no controle da rotina jurídica, oferecendo uma solução prática e de baixo custo para gerenciamento de clientes, processos e financeiro.
 
-## Aplicação terá o objetivo de substituir o atual uso de planilha para controle de clientes. E reduzir os custos de sistemas robustos de gestão de escritório de advocacia.
+## Motivação
+
+Desenvolvido sob medida para uma advogada autônoma, com o objetivo de digitalizar e centralizar informações que antes eram controladas manualmente em planilhas, sem depender de sistemas robustos de gestão de escritório — que costumam ter custos elevados.
 
 ## Funcionalidades
 
-Por meio dele, é possível:
-
-- Criar, buscar, atualizar e deletar clientes, processos e registros financeiros (operações CRUD)  
-- Gerenciar pagamentos e suas respectivas parcelas  
-- Acompanhar valores pagos e pendentes  
-- Relacionar clientes, processos e movimentações financeiras  
+- Cadastro, busca, atualização e exclusão de clientes, processos e registros financeiros (CRUD)
+- Gerenciamento de pagamentos e parcelas
+- Acompanhamento de valores pagos e pendentes
+- Relacionamento entre clientes, processos e movimentações financeiras
+- Acompanhamento de status de processos
 
 ## Boas Práticas Aplicadas
 
-O sistema está sendo desenvolvido seguindo boas práticas como:
-
-- Arquitetura em camadas (controller, service, repository, DTO e entities)  
-- Tratamento de exceções personalizado, garantindo respostas claras da API  
-- Uso de API REST para comunicação entre as camadas  
-- Organização de código voltada para manutenção e escalabilidade  
+- Arquitetura em camadas (controller, service, repository, DTO e entities)
+- Tratamento de exceções personalizado com respostas claras da API
+- API REST para comunicação entre as camadas
+- Código organizado para manutenção e escalabilidade
 
 ## Tecnologias Utilizadas
 
-- Java 17  
-- Spring Boot  
-- Spring Data JPA / Hibernate  
-- Spring Security  
-- OAuth2 / JWT  
-- Banco de dados relacional  
+- Java 17
+- Spring Boot
+- Spring Data JPA / Hibernate
+- Spring Security + OAuth2 / JWT
+- Banco de dados Postgresql
+- Frontend estático (HTML, CSS e JS)
 
-## Status do Projeto
+## Implantação
 
-Em desenvolvimento. Novas funcionalidades e melhorias estão sendo implementadas continuamente.
+A aplicação está em uso real, implantada localmente na máquina da cliente. O serviço Spring roda via **NSSM** (Non-Sucking Service Manager) e o banco de dados opera localmente — solução escolhida para eliminar custos de infraestrutura em nuvem.
 
-## Este projeto foi solicitado por uma advogada. O qual terá utilização real em produção !!
+## Status
+
+Em produção. Novas funcionalidades e melhorias são implementadas regularmente.
+
